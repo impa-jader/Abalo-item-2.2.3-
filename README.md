@@ -22,18 +22,41 @@ random.seed(10012)
 
 
 def count_islands(map):
-    x=len(map)-1
-    y=len (map[1])-1
-    coords=[[i, j] for i in range(map) for j in range(map[0])]
+    y=len(map)-1
+    x=len (map[0])-1
+    def around(k):
+        around=[]
+        direçoes=[(-1,0),(-1,1),(-1,-1),(0,1),(0,-1),(1,-1),(1,0),(1,1)]
+        for d in direçoes:
+            if (k+d)[0]>=0 and (k+d)[1]>=0 and (k+d)[0]<=x and (k+d)[1]<=y:
+                X,Y= k+d
+                around.append(map[Y][X])
+        return around
+
+    coords=[(i, j) for i in range(len(map[0])) for j in range(len(map))]
     contei= set()
     n=0
-
-    for k in coords:
-        if k not in contei:
-            contei.append(k)
-            
+    def find_island(monte_de_coisas):
+        for k in monte_de_coisas:
+            Já_contei_esta_ilha=False
+            monte_de_coisas.pop(k)
+            X,Y= k
+            if k not in contei:
+                contei.append(k)
+                if map[Y][X]==1:
+                    for m in around(k):
+                        if m in contei:
+                            Já_contei_esta_ilha= True
+                    if Já_contei_esta_ilha==False:    
+                        n+= 1
+                    next=[]
+                    next.append(j for j in around(k))
+                    while next!=[]:
+                            find_island(next)
+        find_island(coords)                    
     return n
 
 if __name__=="__main__":
-    m1 = generateMap(5, 5, 0.3) # Exemplo
-    print_map(m1)
+    mapa = generateMap(5, 5, 0.3)
+    print_map(mapa)
+    print(f"Número de ilhas: {count_islands(mapa)}")
