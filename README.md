@@ -18,7 +18,6 @@ def save_map(map_s, path = 'new_map.txt'):
 def print_map(map_p):
     for row in map_p:
         print("".join(map(str, row)))
-random.seed(10012)
 
 
 def count_islands(map):
@@ -28,8 +27,8 @@ def count_islands(map):
         around=[]
         direçoes=[(-1,0),(-1,1),(-1,-1),(0,1),(0,-1),(1,-1),(1,0),(1,1)]
         for d in direçoes:
-            if (k+d)[0]>=0 and (k+d)[1]>=0 and (k+d)[0]<=x and (k+d)[1]<=y:
-                X,Y= k+d
+            if (k[0]+d[0],k[1]+d)[0]>=0 and (k[0]+d[0],k[1]+d)[1]>=0 and (k[0]+d[0],k[1]+d)[0]<=x and (k[0]+d[0],k[1]+d)[1]<=y:
+                X,Y= k[0]+d[0],k[1]+d
                 around.append(map[Y][X])
         return around
 
@@ -42,12 +41,15 @@ def count_islands(map):
             monte_de_coisas.pop(k)
             X,Y= k
             if k not in contei:
-                contei.append(k)
+                contei.add(k)
                 if map[Y][X]==1:
                     for m in around(k):
-                        if m in contei:
+                        Xi,Yi=m
+                        if m in contei and map[Yi][Xi]==1:
                             Já_contei_esta_ilha= True
-                    if Já_contei_esta_ilha==False:    
+                    if Já_contei_esta_ilha==False:
+                        nonlocal n
+                        print('potato')
                         n+= 1
                     next=[]
                     next.append(j for j in around(k))
