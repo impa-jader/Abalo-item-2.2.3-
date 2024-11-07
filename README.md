@@ -1,6 +1,9 @@
+# Questão 3
+
 import random
 
-def generateMap(m: int, n: int, ground_water_ration = .2, water = '0', ground = '1' ):
+
+def generateMap(m: int, n: int, ground_water_ration = .2, water = 0, ground = 1 ):
     r = int(m*n*ground_water_ration+.5)
     newMap = [[water]*m for _ in range(n)]
     coord = [(i, j) for i in range(n) for j in range(m)]
@@ -19,7 +22,6 @@ def print_map(map_p):
     for row in map_p:
         print("".join(map(str, row)))
 
-
 def count_islands(map):
     y=len(map)-1
     x=len (map[0])-1
@@ -27,7 +29,7 @@ def count_islands(map):
         around=[]
         direçoes=[(-1,0),(-1,1),(-1,-1),(0,1),(0,-1),(1,-1),(1,0),(1,1)]
         for d in direçoes:
-            if (k[0]+d[0],k[1]+d)[0]>=0 and (k[0]+d[0],k[1]+d)[1]>=0 and (k[0]+d[0],k[1]+d)[0]<=x and (k[0]+d[0],k[1]+d)[1]<=y:
+            if (k[0]+d[0],k[1]+d[1])[0]>=0 and (k[0]+d[0],k[1]+d[1])[1]>=0 and (k[0]+d[0],k[1]+d[1])[0]<=x and (k[0]+d[0],k[1]+d[1])[1]<=y:
                 X,Y= k[0]+d[0],k[1]+d
                 around.append(map[Y][X])
         return around
@@ -58,6 +60,31 @@ def count_islands(map):
         find_island(coords)                    
     return n
 
+# Questão 5
+def tem_lago(map):
+    coords=[(i, j) for i in range(len(map[0])) for j in range(len(map))]
+    for i in coords:
+        Visinhos=0
+        Visinhos_terra=0
+        X,Y= i
+        direçoes=[(-1,0),(0,1),(0,-1),(1,0)]
+        if map[Y][X]==0:
+            for d in direçoes:
+                if X+d[0]>=0 and Y+d[1]>=0 and X+d[0]<len(map[0]) and Y+d[1]<len(map):
+                    Visinhos+=1
+                    if map[Y+d[1]][X+d[0]]==1:
+                        Visinhos_terra+=1
+            if Visinhos==Visinhos_terra:
+                return True
+    return False
+
+
+if __name__ == "__main__":
+    mapa = generateMap(5, 5, 0.3)  
+    print_map(mapa)  
+    print(f"Número de ilhas: {count_islands(mapa)}")  
+    #save_map(mapa, "new_map.txt")
+    print(tem_lago(mapa))
 if __name__=="__main__":
     mapa = generateMap(5, 5, 0.3)
     print_map(mapa)
