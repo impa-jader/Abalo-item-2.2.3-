@@ -40,7 +40,6 @@ def count_islands(map):
     def find_island(monte_de_coisas):
         for k in monte_de_coisas:
             Já_contei_esta_ilha=False
-            monte_de_coisas.pop(k)
             X,Y= k
             if k not in contei:
                 contei.add(k)
@@ -85,7 +84,3 @@ if __name__ == "__main__":
     print(f"Número de ilhas: {count_islands(mapa)}")  
     #save_map(mapa, "new_map.txt")
     print(tem_lago(mapa))
-if __name__=="__main__":
-    mapa = generateMap(5, 5, 0.3)
-    print_map(mapa)
-    print(f"Número de ilhas: {count_islands(mapa)}")
