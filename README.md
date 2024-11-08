@@ -191,5 +191,6 @@ if __name__ == "__main__":
     print(f"Centro da maior ilha: {bigest_island_centro(mapa)}")
     print(f"Centro da menor ilha: {smalest_island_centro(mapa)}")
 
+
     print(tem_lago(mapa))
     print(f"Centro da Meior ilha: {bigest_island_centro(mapa)}")
