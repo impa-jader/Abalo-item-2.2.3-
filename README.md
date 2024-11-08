@@ -59,7 +59,7 @@ def bigest_island_centro(map):
     y=len(map)-1
     x=len (map[0])-1
     islands=[]
-    Mei=[] #Meior ilha
+    Mai=[] #maior ilha
     contei= set()
     coords=[(i, j) for i in range(len(map[0])) for j in range(len(map))]
     def surrounding(k,l=[]):
@@ -91,14 +91,14 @@ def bigest_island_centro(map):
             islands.append(see_island_coords(p))
     #print(islands)
     for i in islands:
-        if len(i)>len(Mei):
-            Mei=i
-    # Assim, Mei é o conjunto de coordenadas da Meior ilha. Para calcular o centro, farei a média das coordenadas e arredondarei
+        if len(i)>len(Mai):
+            Mai=i
+    # Assim, Mai é o conjunto de coordenadas da maior ilha. Para calcular o centro, farei a média das coordenadas e arredondarei
     Xc=0
     Yc=0
-    for j in Mei:
-        Xc+=j[0]/len(Mei)
-        Yc+=j[1]/len(Mei)
+    for j in Mai:
+        Xc+=j[0]/len(Mai)
+        Yc+=j[1]/len(Mai)
  
     return (round(Xc),round(Yc))
 
@@ -136,11 +136,12 @@ def smalest_island_centro(map):
         X,Y=p
         if p not in contei and map[Y][X]== 1: # Talvez algumas condições estejam redundantes com see_island_coords, mas tava bugando e o jeito de corrigir foi este. Deve dar apaga alguma das condições redundantes mas não farei isto agora.
             islands.append(see_island_coords(p))
-    print(islands)
     for i in islands:
+        if len(Mei)==0:
+            Mei=i
         if len(i)<len(Mei):
             Mei=i
-    # Assim, Mei é o conjunto de coordenadas da menor ilha. Para calcular o centro, farei a média das coordenadas e arredondarei
+    # Assim, Mai é o conjunto de coordenadas da menor ilha. Para calcular o centro, farei a média das coordenadas e arredondarei
     Xc=0
     Yc=0
     for j in Mei:
@@ -168,10 +169,14 @@ def tem_lago(map):
     return False
 
 
-if __name__ == "__Mein__":
+if __name__ == "__main__":
     mapa = generateMap(5, 5, 0.3)  
     print_map(mapa)  
     print(f"Número de ilhas: {count_islands(mapa)}")  
     #save_map(mapa, "new_map.txt")
+    print(tem_lago(mapa))
+    print(f"Centro da maior ilha: {bigest_island_centro(mapa)}")
+    print(f"Centro da menor ilha: {smalest_island_centro(mapa)}")
+
     print(tem_lago(mapa))
     print(f"Centro da Meior ilha: {bigest_island_centro(mapa)}")
