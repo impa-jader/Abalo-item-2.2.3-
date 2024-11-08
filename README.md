@@ -41,7 +41,6 @@ def count_islands(map):
         if p not in contei:
             contei.add(p)
             l=[p]
-            #island_parts=[]
             X,Y=p
             if map[Y][X]== 1:
                 nonlocal n
@@ -54,6 +53,101 @@ def count_islands(map):
         see_island(p)
     return n
 
+# Questão 4 
+# Utilizarei o codigo da 3 como base
+def bigest_island_centro(map):
+    y=len(map)-1
+    x=len (map[0])-1
+    islands=[]
+    Mei=[] #Meior ilha
+    contei= set()
+    coords=[(i, j) for i in range(len(map[0])) for j in range(len(map))]
+    def surrounding(k,l=[]):
+        direçoes=[(-1,0),(-1,1),(-1,-1),(0,1),(0,-1),(1,-1),(1,0),(1,1)]
+        for d in direçoes:
+            if (k[0]+d[0],k[1]+d[1])[0]>=0 and (k[0]+d[0],k[1]+d[1])[1]>=0 and (k[0]+d[0],k[1]+d[1])[0]<=x and (k[0]+d[0],k[1]+d[1])[1]<=y:
+                X,Y= k[0]+d[0],k[1]+d[1]
+                if (X,Y) not in contei:
+                    l.append((k[0]+d[0],k[1]+d[1]))
+
+    def see_island_coords(p):
+        if p not in contei:
+            contei.add(p)
+            l=[p]
+            X,Y=p
+            ilha_terra=[]
+            if map[Y][X]== 1:
+                for k in l:
+                    contei.add(k)
+                    if map[k[1]][k[0]]==1:
+                        ilha_terra.append(k)
+                        surrounding(k,l)
+            return ilha_terra
+            
+            
+    for p in coords:
+        X,Y=p
+        if p not in contei and map[Y][X]== 1: # Talvez algumas condições estejam redundantes com see_island_coords, mas tava bugando e o jeito de corrigir foi este. Deve dar apaga alguma das condições redundantes mas não farei isto agora.
+            islands.append(see_island_coords(p))
+    #print(islands)
+    for i in islands:
+        if len(i)>len(Mei):
+            Mei=i
+    # Assim, Mei é o conjunto de coordenadas da Meior ilha. Para calcular o centro, farei a média das coordenadas e arredondarei
+    Xc=0
+    Yc=0
+    for j in Mei:
+        Xc+=j[0]/len(Mei)
+        Yc+=j[1]/len(Mei)
+ 
+    return (round(Xc),round(Yc))
+
+def smalest_island_centro(map):
+    y=len(map)-1
+    x=len (map[0])-1
+    islands=[]
+    Mei=[] #menor ilha
+    contei= set()
+    coords=[(i, j) for i in range(len(map[0])) for j in range(len(map))]
+    def surrounding(k,l=[]):
+        direçoes=[(-1,0),(-1,1),(-1,-1),(0,1),(0,-1),(1,-1),(1,0),(1,1)]
+        for d in direçoes:
+            if (k[0]+d[0],k[1]+d[1])[0]>=0 and (k[0]+d[0],k[1]+d[1])[1]>=0 and (k[0]+d[0],k[1]+d[1])[0]<=x and (k[0]+d[0],k[1]+d[1])[1]<=y:
+                X,Y= k[0]+d[0],k[1]+d[1]
+                if (X,Y) not in contei:
+                    l.append((k[0]+d[0],k[1]+d[1]))
+
+    def see_island_coords(p):
+        if p not in contei:
+            contei.add(p)
+            l=[p]
+            X,Y=p
+            ilha_terra=[]
+            if map[Y][X]== 1:
+                for k in l:
+                    contei.add(k)
+                    if map[k[1]][k[0]]==1:
+                        ilha_terra.append(k)
+                        surrounding(k,l)
+            return ilha_terra
+            
+            
+    for p in coords:
+        X,Y=p
+        if p not in contei and map[Y][X]== 1: # Talvez algumas condições estejam redundantes com see_island_coords, mas tava bugando e o jeito de corrigir foi este. Deve dar apaga alguma das condições redundantes mas não farei isto agora.
+            islands.append(see_island_coords(p))
+    print(islands)
+    for i in islands:
+        if len(i)<len(Mei):
+            Mei=i
+    # Assim, Mei é o conjunto de coordenadas da menor ilha. Para calcular o centro, farei a média das coordenadas e arredondarei
+    Xc=0
+    Yc=0
+    for j in Mei:
+        Xc+=j[0]/len(Mei)
+        Yc+=j[1]/len(Mei)
+ 
+    return (round(Xc),round(Yc))
 
 # Questão 5
 def tem_lago(map):
@@ -74,9 +168,10 @@ def tem_lago(map):
     return False
 
 
-if __name__ == "__main__":
+if __name__ == "__Mein__":
     mapa = generateMap(5, 5, 0.3)  
     print_map(mapa)  
     print(f"Número de ilhas: {count_islands(mapa)}")  
     #save_map(mapa, "new_map.txt")
     print(tem_lago(mapa))
+    print(f"Centro da Meior ilha: {bigest_island_centro(mapa)}")
