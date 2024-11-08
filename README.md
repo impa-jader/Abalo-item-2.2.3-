@@ -23,13 +23,23 @@ def print_map(map_p):
         print("".join(map(str, row)))
 
 
-def count_islands(map):
+def count_islands(m):
+    map = []
+    with open(m, "r") as coisa:
+        for linha in coisa:
+            new_line = []
+            linha = linha.strip()
+            for i in linha:
+                new_line.append(int(i))
+            map.append(new_line) 
+
     y=len(map)-1
     x=len (map[0])-1
     contei= set()
     coords=[(i, j) for i in range(len(map[0])) for j in range(len(map))]
     n=0
     def surrounding(k,l=[]):
+        nonlocal map
         direçoes=[(-1,0),(-1,1),(-1,-1),(0,1),(0,-1),(1,-1),(1,0),(1,1)]
         for d in direçoes:
             if (k[0]+d[0],k[1]+d[1])[0]>=0 and (k[0]+d[0],k[1]+d[1])[1]>=0 and (k[0]+d[0],k[1]+d[1])[0]<=x and (k[0]+d[0],k[1]+d[1])[1]<=y:
@@ -38,6 +48,7 @@ def count_islands(map):
                     l.append((k[0]+d[0],k[1]+d[1]))
 
     def see_island(p):
+        nonlocal map
         if p not in contei:
             contei.add(p)
             l=[p]
@@ -52,6 +63,8 @@ def count_islands(map):
     for p in coords:
         see_island(p)
     return n
+
+
 
 # Questão 4 
 # Utilizarei o codigo da 3 como base
@@ -171,9 +184,9 @@ def tem_lago(map):
 
 if __name__ == "__main__":
     mapa = generateMap(5, 5, 0.3)  
-    print_map(mapa)  
-    print(f"Número de ilhas: {count_islands(mapa)}")  
-    #save_map(mapa, "new_map.txt")
+    print_map(mapa)    
+    save_map(mapa, "new_map.txt")
+    print(count_islands("new_map.txt"))
     print(tem_lago(mapa))
     print(f"Centro da maior ilha: {bigest_island_centro(mapa)}")
     print(f"Centro da menor ilha: {smalest_island_centro(mapa)}")
